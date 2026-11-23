@@ -1,54 +1,63 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: [true, "the full name is required"],
-      minLength: 3,
-      maxLength: 30,
+      required: [true, "First name is required"],
+      trim: true,
+      minlength: 2,
+      maxlength: 30,
     },
     lastName: {
       type: String,
-      required: [true, "the the last name is required"],
-      minLength: 3,
-      maxLength: 30,
+      required: [true, "Last name is required"],
+      trim: true,
+      minlength: 2,
+      maxlength: 30,
     },
     email: {
       type: String,
-      required: [true, "the email is required"],
-      validate: {
-        validator: (email) =>
-          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email),
-        message: (obj) => `${obj.value} is not valid`,
-      },
-      unique: [true, "the email must be unique"],
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please enter a valid email"],
     },
     phone: {
       type: String,
-      required: [true, "the phone is required"],
-      maxLength: 11,
-      unique: [true, "the phone number must be unique"],
+      required: [true, "Phone number is required"],
+      unique: true,
+      trim: true,
+      match: [/^\+?[0-9]{7,16}$/, "Please enter a valid phone number"],
     },
     password: {
       type: String,
-      required: [true, "the password must be unique"],
+      required: [true, "Password is required"],
+      minlength: 8,
+      select: false,
     },
     username: {
       type: String,
-      unique: [true, "the username must be unique"],
-      required: [true, "the username is required"],
-      minLength: 5,
-      maxLength: 50,
+      required: [true, "Username is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      minlength: 5,
+      maxlength: 30,
+      match: [/^[a-z0-9._]+$/, "Username can contain lowercase letters, numbers, dots and underscores"],
     },
     profile: {
       type: String,
       default: "",
+      trim: true,
     },
     bio: {
       type: String,
       default: "",
+      trim: true,
+      maxlength: 160,
     },
     isEmailVerified: {
       type: Boolean,
@@ -60,20 +69,41 @@ const userSchema = mongoose.Schema(
     },
     lastSeen: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
     },
-    blockedUsers: {
-      type: mongoose.Types.ObjectId,
-      default: null,
+    privacy: {
+      showPhoneNumber: {
+        type: Boolean,
+        default: false,
+      },
+      lastSeenVisibility: {
+        type: String,
+        enum: ["everyone", "contacts", "nobody"],
+        default: "contacts",
+      },
+      profilePhotoVisibility: {
+        type: String,
+        enum: ["everyone", "contacts", "nobody"],
+        default: "everyone",
+      },
+      storyVisibility: {
+        type: String,
+        enum: ["everyone", "contacts", "selected"],
+        default: "contacts",
+      },
     },
   },
   { timestamps: true },
 );
-userSchema.pre("save", function () {
-  if (this.password && isModified(this.password)) {
-    this.password = bcrypt.genSalt(10, this.password);
-  }
+
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 12);
 });
+
+userSchema.index({ username: 1 }, { unique: true });
+userSchema.index({ email: 1 }, { unique: true });
+userSchema.index({ phone: 1 }, { unique: true });
 
 const userModel = mongoose.model("users", userSchema);
 
