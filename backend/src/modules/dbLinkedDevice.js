@@ -5,7 +5,7 @@ const linkedDeviceSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
-      required: [true, "User ID is required"],
+      required: false,
       index: true,
     },
     deviceName: {
@@ -24,6 +24,10 @@ const linkedDeviceSchema = new mongoose.Schema(
       trim: true,
       sparse: true,
     },
+    pairingTokenHash: { type: String, select: false },
+    pairingExpiresAt: { type: Date, default: null },
+    pairedAt: { type: Date, default: null },
+    encryptedRefreshToken: { type: String, select: false },
     refreshTokenHash: {
       type: String,
       select: false,
