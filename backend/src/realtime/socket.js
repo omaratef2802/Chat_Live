@@ -49,6 +49,7 @@ module.exports = (io) => {
         const {conversationId}=data;
         const type=data.type||"text";
         if(!conversationId) return ack({success:false,message:"conversationId is required"});
+        if(socket.data.deviceId && !await Device.exists({_id:socket.data.deviceId,userId,isActive:true,revokedAt:null})) return ack({success:false,message:"Device has been revoked"});
         if(!["text","image","video","audio","file"].includes(type)) return ack({success:false,message:"Invalid message type"});
         if(type!=="text"&&!data.media) return ack({success:false,message:"Media metadata is required"});
         if(type==="text"&&!String(data.content||"").trim()) return ack({success:false,message:"Message content is required"});
