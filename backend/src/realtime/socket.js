@@ -5,6 +5,7 @@ const Member = require("../modules/dbConversationMember");
 const Message = require("../modules/dbMessages");
 const Conversation = require("../modules/dbConversation");
 const Block = require("../modules/dbBlock");
+const Notification = require("../modules/dbNotification");
 
 module.exports = (io) => {
   io.use(async (socket,next) => {
@@ -64,6 +65,7 @@ module.exports = (io) => {
         const message=await Message.create({conversationId,senderId:userId,type,content:data.content||"",media:data.media||null,replyTo:data.replyTo||null});
         await Conversation.updateOne({_id:conversationId},{$set:{lastMessage:message._id,lastActivityAt:new Date()}});
         io.to(String(conversationId)).emit("message:new",message);
+        if(conversation.type==="private") { const recipients=await Member.find({conversationId,leftAt:null,userId:{$ne:userId}}).select("userId"); if(recipients.length) await Notification.insertMany(recipients.map(item=>({recipientId:item.userId,senderId:userId,type:"message",content:"New message",relatedId:message._id,relatedType:"message"}))); }
         ack({success:true,message});
       } catch(error) { ack({success:false,message:error.message}); }
     });
