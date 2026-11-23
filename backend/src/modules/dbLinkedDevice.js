@@ -1,30 +1,54 @@
 const mongoose = require("mongoose");
 
-const linkedDeviceSchema = mongoose.Schema(
+const linkedDeviceSchema = new mongoose.Schema(
   {
-    userld: {
-      type: mongoose.Schema.ObjectId,
-      required: [true, "the user id is required"],
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: [true, "User ID is required"],
+      index: true,
     },
     deviceName: {
       type: String,
-      required: [true, "the device name is required"],
+      required: [true, "Device name is required"],
+      trim: true,
+      maxlength: 100,
     },
     deviceType: {
       type: String,
-      default: "mobile",
+      enum: ["desktop", "mobile", "tablet", "browser"],
+      default: "browser",
+    },
+    deviceId: {
+      type: String,
+      trim: true,
+      sparse: true,
+    },
+    refreshTokenHash: {
+      type: String,
+      select: false,
     },
     isActive: {
       type: Boolean,
       default: false,
     },
-    lastSeen: {
+    lastActiveAt: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
+    },
+    revokedAt: {
+      type: Date,
+      default: null,
+    },
+    userAgent: {
+      type: String,
+      maxlength: 500,
     },
   },
   { timestamps: true },
 );
+
+linkedDeviceSchema.index({ userId: 1, isActive: 1 });
 
 const linkedDeviceModel = mongoose.model("linkedDevices", linkedDeviceSchema);
 
