@@ -1,31 +1,42 @@
 const mongoose = require("mongoose");
 
-const otpSchema = mongoose.Schema(
+const otpSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Types.ObjectId,
-      unique: [true, "the userId must be unique"],
-      required: [true, "the userId is required"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: [true, "User ID is required"],
     },
-    otp: {
+    codeHash: {
       type: String,
-      minLength: 6,
+      required: [true, "OTP hash is required"],
+      select: false,
     },
     purpose: {
       type: String,
-      enum: ["verify", "reset"],
-      default: "verify",
+      enum: ["email-verification", "password-reset"],
+      required: true,
     },
     expiresAt: {
       type: Date,
+      required: true,
     },
-    attempt: {
+    attempts: {
       type: Number,
-      MaxLenght: 3,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    verifiedAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true },
 );
+
+otpSchema.index({ userId: 1, purpose: 1 }, { unique: true });
+otpSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const otpModel = mongoose.model("otps", otpSchema);
 
