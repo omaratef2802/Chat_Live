@@ -1,20 +1,13 @@
 const express = require("express");
 const healthRoutes = require("./routes/healthRoutes");
+const apiRoutes = require("./routes/apiRoutes");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
-
 const app = express();
-
-app.use(express.json({ limit: "1mb" }));
-app.use(express.urlencoded({ extended: true }));
-
-app.get("/", (req, res) => {
-  res.status(200).json({ success: true, message: "Chat Live backend" });
-});
-
-app.use("/api/v1/health", healthRoutes);
-
-app.use(notFound);
-app.use(errorHandler);
-
+app.disable("x-powered-by");
+app.use((req, res, next) => { const origins = (process.env.CORS_ORIGIN || process.env.CLIENT_URL || "").split(",").map(x => x.trim()).filter(Boolean); const origin = req.headers.origin; if (!origin || origins.includes("*") || origins.includes(origin)) { if (origin) res.setHeader("Access-Control-Allow-Origin", origins.includes("*") ? "*" : origin); res.setHeader("Vary", "Origin"); res.setHeader("Access-Control-Allow-Credentials", "true"); res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE,OPTIONS"); } if (req.method === "OPTIONS") return res.sendStatus(204); next(); });
+app.use(express.json({ limit: "1mb" })); app.use(express.urlencoded({ extended: true }));
+app.get("/", (req, res) => res.json({ success: true, message: "Chat Live API", version: "v1" }));
+app.use("/api/v1/health", healthRoutes); app.use("/api/v1", apiRoutes);
+app.use(notFound); app.use(errorHandler);
 module.exports = { app };
