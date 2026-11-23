@@ -49,15 +49,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/health",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "health"
-              ]
-            }
+            "url": "{{baseUrl}}/health"
           },
           "event": [
             {
@@ -65,8 +57,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "pm.test(\"MongoDB is connected\",function(){pm.expect(data.database).to.eql(\"connected\");});"
                 ]
               }
             }
@@ -90,16 +83,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "register"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/register",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"firstName\": \"{{firstName}}\",\n  \"lastName\": \"{{lastName}}\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"{{phone}}\",\n  \"password\": \"{{password}}\",\n  \"username\": \"{{username}}\"\n}",
@@ -116,8 +100,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -136,16 +120,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/verify-email",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "verify-email"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/verify-email",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\",\n  \"code\": \"{{otpCode}}\"\n}",
@@ -162,8 +137,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -182,16 +157,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/resend-verification",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "resend-verification"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/resend-verification",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\"\n}",
@@ -208,8 +174,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -228,16 +194,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "login"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/login",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
@@ -254,8 +211,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.token) pm.environment.set(\"accessToken\",data.token);"
                 ]
               }
             }
@@ -274,16 +232,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/forgot-password",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "forgot-password"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/forgot-password",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\"\n}",
@@ -300,8 +249,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -320,16 +269,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/reset-password",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "reset-password"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/reset-password",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{email}}\",\n  \"code\": \"{{otpCode}}\",\n  \"password\": \"{{password}}\"\n}",
@@ -346,8 +286,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -366,16 +306,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/refresh",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "refresh"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/refresh",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"deviceId\": \"{{deviceId}}\",\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
@@ -392,8 +323,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -419,16 +350,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/auth/logout",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "logout"
-              ]
-            },
+            "url": "{{baseUrl}}/auth/logout",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -445,8 +367,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -472,16 +394,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/users/me",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "me"
-              ]
-            }
+            "url": "{{baseUrl}}/users/me"
           },
           "event": [
             {
@@ -489,8 +402,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -511,16 +424,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/users/search?q=omar",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "search?q=omar"
-              ]
-            }
+            "url": "{{baseUrl}}/users/search?q=omar"
           },
           "event": [
             {
@@ -528,8 +432,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -555,16 +459,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/users/me",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "me"
-              ]
-            },
+            "url": "{{baseUrl}}/users/me",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"bio\": \"Chat Live reference profile\"\n}",
@@ -581,8 +476,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -608,17 +503,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/users/me/privacy",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "me",
-                "privacy"
-              ]
-            },
+            "url": "{{baseUrl}}/users/me/privacy",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"showPhoneNumber\": false,\n  \"lastSeenVisibility\": \"contacts\",\n  \"profilePhotoVisibility\": \"everyone\",\n  \"storyVisibility\": \"contacts\"\n}",
@@ -635,8 +520,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -662,15 +547,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/contacts",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "contacts"
-              ]
-            }
+            "url": "{{baseUrl}}/contacts"
           },
           "event": [
             {
@@ -678,8 +555,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -705,15 +582,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/contacts",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "contacts"
-              ]
-            },
+            "url": "{{baseUrl}}/contacts",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userId\": \"{{otherUserId}}\",\n  \"nickname\": \"Friend\"\n}",
@@ -730,8 +599,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.contact) pm.environment.set(\"contactId\",data.contact._id);"
                 ]
               }
             }
@@ -757,16 +627,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/contacts/{{contactId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "contacts",
-                "{{contactId}}"
-              ]
-            },
+            "url": "{{baseUrl}}/contacts/{{contactId}}",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nickname\": \"Updated name\",\n  \"isFavorite\": true\n}",
@@ -783,8 +644,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -805,16 +666,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/contacts/{{contactId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "contacts",
-                "{{contactId}}"
-              ]
-            }
+            "url": "{{baseUrl}}/contacts/{{contactId}}"
           },
           "event": [
             {
@@ -822,8 +674,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -844,15 +696,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/blocks",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "blocks"
-              ]
-            }
+            "url": "{{baseUrl}}/blocks"
           },
           "event": [
             {
@@ -860,8 +704,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -887,15 +731,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/blocks",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "blocks"
-              ]
-            },
+            "url": "{{baseUrl}}/blocks",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userId\": \"{{otherUserId}}\"\n}",
@@ -912,8 +748,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -934,16 +770,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/blocks/{{otherUserId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "blocks",
-                "{{otherUserId}}"
-              ]
-            }
+            "url": "{{baseUrl}}/blocks/{{otherUserId}}"
           },
           "event": [
             {
@@ -951,8 +778,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -978,15 +805,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations"
-              ]
-            }
+            "url": "{{baseUrl}}/conversations"
           },
           "event": [
             {
@@ -994,8 +813,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1021,16 +840,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/private",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "private"
-              ]
-            },
+            "url": "{{baseUrl}}/conversations/private",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"userId\": \"{{otherUserId}}\"\n}",
@@ -1047,8 +857,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.conversation) pm.environment.set(\"conversationId\",data.conversation._id);"
                 ]
               }
             }
@@ -1069,17 +880,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages?page=1&limit=30",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "{{conversationId}}",
-                "messages?page=1&limit=30"
-              ]
-            }
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/messages?page=1&limit=30"
           },
           "event": [
             {
@@ -1087,8 +888,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1114,17 +915,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "{{conversationId}}",
-                "messages"
-              ]
-            },
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/messages",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"type\": \"text\",\n  \"content\": \"Hello from Postman\"\n}",
@@ -1141,8 +932,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.message) pm.environment.set(\"messageId\",data.message._id);"
                 ]
               }
             }
@@ -1168,18 +960,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "{{conversationId}}",
-                "messages",
-                "{{messageId}}"
-              ]
-            },
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"content\": \"Edited message\"\n}",
@@ -1196,8 +977,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1223,18 +1004,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "{{conversationId}}",
-                "messages",
-                "{{messageId}}"
-              ]
-            },
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"forEveryone\": false\n}",
@@ -1251,8 +1021,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1278,19 +1048,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}/reactions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "{{conversationId}}",
-                "messages",
-                "{{messageId}}",
-                "reactions"
-              ]
-            },
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}/reactions",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"emoji\": \"👍\"\n}",
@@ -1307,8 +1065,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1334,17 +1092,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/conversations/{{conversationId}}/read",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "conversations",
-                "{{conversationId}}",
-                "read"
-              ]
-            },
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/read",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"messageId\": \"{{messageId}}\"\n}",
@@ -1361,8 +1109,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1393,15 +1141,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups"
-              ]
-            },
+            "url": "{{baseUrl}}/groups",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Postman Group\",\n  \"description\": \"Test group\",\n  \"memberIds\": [\n    \"{{otherUserId}}\"\n  ]\n}",
@@ -1418,8 +1158,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.conversation) pm.environment.set(\"groupId\",data.conversation._id);"
                 ]
               }
             }
@@ -1440,17 +1181,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}/members",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}",
-                "members"
-              ]
-            }
+            "url": "{{baseUrl}}/groups/{{groupId}}/members"
           },
           "event": [
             {
@@ -1458,8 +1189,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1485,16 +1216,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}"
-              ]
-            },
+            "url": "{{baseUrl}}/groups/{{groupId}}",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Updated group\",\n  \"description\": \"Updated description\"\n}",
@@ -1511,8 +1233,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1538,17 +1260,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}/members",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}",
-                "members"
-              ]
-            },
+            "url": "{{baseUrl}}/groups/{{groupId}}/members",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"memberIds\": [\n    \"{{otherUserId}}\"\n  ]\n}",
@@ -1565,8 +1277,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1592,19 +1304,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}/members/{{otherUserId}}/role",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}",
-                "members",
-                "{{otherUserId}}",
-                "role"
-              ]
-            },
+            "url": "{{baseUrl}}/groups/{{groupId}}/members/{{otherUserId}}/role",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"admin\"\n}",
@@ -1621,8 +1321,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1643,18 +1343,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}/members/{{otherUserId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}",
-                "members",
-                "{{otherUserId}}"
-              ]
-            }
+            "url": "{{baseUrl}}/groups/{{groupId}}/members/{{otherUserId}}"
           },
           "event": [
             {
@@ -1662,8 +1351,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1689,17 +1378,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}/leave",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}",
-                "leave"
-              ]
-            },
+            "url": "{{baseUrl}}/groups/{{groupId}}/leave",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -1716,8 +1395,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1738,16 +1417,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/groups/{{groupId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "groups",
-                "{{groupId}}"
-              ]
-            }
+            "url": "{{baseUrl}}/groups/{{groupId}}"
           },
           "event": [
             {
@@ -1755,8 +1425,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1782,13 +1452,15 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/media",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "media"
+            "url": "{{baseUrl}}/media",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
               ]
             }
           },
@@ -1798,8 +1470,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1825,15 +1497,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/stories",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "stories"
-              ]
-            }
+            "url": "{{baseUrl}}/stories"
           },
           "event": [
             {
@@ -1841,8 +1505,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1868,15 +1532,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/stories",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "stories"
-              ]
-            },
+            "url": "{{baseUrl}}/stories",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"type\": \"text\",\n  \"content\": \"Testing a story\",\n  \"visibility\": \"contacts\"\n}",
@@ -1893,8 +1549,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.story) pm.environment.set(\"storyId\",data.story._id);"
                 ]
               }
             }
@@ -1920,17 +1577,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/stories/{{storyId}}/view",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "stories",
-                "{{storyId}}",
-                "view"
-              ]
-            },
+            "url": "{{baseUrl}}/stories/{{storyId}}/view",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -1947,8 +1594,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -1969,17 +1616,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/stories/{{storyId}}/views",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "stories",
-                "{{storyId}}",
-                "views"
-              ]
-            }
+            "url": "{{baseUrl}}/stories/{{storyId}}/views"
           },
           "event": [
             {
@@ -1987,8 +1624,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2009,16 +1646,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/stories/{{storyId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "stories",
-                "{{storyId}}"
-              ]
-            }
+            "url": "{{baseUrl}}/stories/{{storyId}}"
           },
           "event": [
             {
@@ -2026,8 +1654,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2053,15 +1681,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/notifications",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications"
-              ]
-            }
+            "url": "{{baseUrl}}/notifications"
           },
           "event": [
             {
@@ -2069,8 +1689,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2096,17 +1716,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications",
-                "{{notificationId}}",
-                "read"
-              ]
-            },
+            "url": "{{baseUrl}}/notifications/{{notificationId}}/read",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -2123,8 +1733,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2150,16 +1760,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/notifications/read-all",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications",
-                "read-all"
-              ]
-            },
+            "url": "{{baseUrl}}/notifications/read-all",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -2176,8 +1777,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2201,17 +1802,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/devices/pair/start",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "devices",
-                "pair",
-                "start"
-              ]
-            },
+            "url": "{{baseUrl}}/devices/pair/start",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"deviceName\": \"Browser device\",\n  \"deviceType\": \"browser\"\n}",
@@ -2228,8 +1819,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.pairToken) pm.environment.set(\"pairToken\",data.pairToken);"
                 ]
               }
             }
@@ -2255,17 +1847,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/devices/pair/confirm",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "devices",
-                "pair",
-                "confirm"
-              ]
-            },
+            "url": "{{baseUrl}}/devices/pair/confirm",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pairToken\": \"{{pairToken}}\"\n}",
@@ -2282,8 +1864,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2302,17 +1884,7 @@
             "auth": {
               "type": "noauth"
             },
-            "url": {
-              "raw": "{{baseUrl}}/devices/pair/status",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "devices",
-                "pair",
-                "status"
-              ]
-            },
+            "url": "{{baseUrl}}/devices/pair/status",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pairToken\": \"{{pairToken}}\"\n}",
@@ -2329,8 +1901,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}",
+                  "if(data.accessToken){pm.environment.set(\"accessToken\",data.accessToken);pm.environment.set(\"refreshToken\",data.refreshToken);pm.environment.set(\"deviceId\",data.deviceId);}"
                 ]
               }
             }
@@ -2351,15 +1924,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/devices",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "devices"
-              ]
-            }
+            "url": "{{baseUrl}}/devices"
           },
           "event": [
             {
@@ -2367,8 +1932,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
@@ -2389,16 +1954,7 @@
                 }
               ]
             },
-            "url": {
-              "raw": "{{baseUrl}}/devices/{{deviceId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "devices",
-                "{{deviceId}}"
-              ]
-            }
+            "url": "{{baseUrl}}/devices/{{deviceId}}"
           },
           "event": [
             {
@@ -2406,8 +1962,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
-                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                  "pm.test(\"Request succeeded\",function(){pm.expect(pm.response.code).to.be.within(200,299);});",
+                  "let data={}; try { data=pm.response.json(); } catch(e) {}"
                 ]
               }
             }
