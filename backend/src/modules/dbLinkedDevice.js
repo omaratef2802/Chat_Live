@@ -28,6 +28,7 @@ const linkedDeviceSchema = new mongoose.Schema(
     pairingExpiresAt: { type: Date, default: null },
     pairedAt: { type: Date, default: null },
     encryptedRefreshToken: { type: String, select: false },
+    refreshTokenExpiresAt: { type: Date, default: null },
     refreshTokenHash: {
       type: String,
       select: false,
@@ -53,6 +54,7 @@ const linkedDeviceSchema = new mongoose.Schema(
 );
 
 linkedDeviceSchema.index({ userId: 1, isActive: 1 });
+linkedDeviceSchema.index({ pairingExpiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const linkedDeviceModel = mongoose.model("linkedDevices", linkedDeviceSchema);
 
