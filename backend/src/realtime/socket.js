@@ -36,6 +36,7 @@ module.exports = (io) => {
     socket.on("conversation:join",async(data={},ack=()=>{})=>{
       try {
         const conversationId=data.conversationId;
+        if(socket.data.deviceId && !await Device.exists({_id:socket.data.deviceId,userId,isActive:true,revokedAt:null})) return ack({success:false,message:"Device has been revoked"});
         const member=await Member.exists({conversationId,userId,leftAt:null});
         if(!member) return ack({success:false,message:"Not a conversation member"});
         socket.join(String(conversationId));
@@ -49,6 +50,7 @@ module.exports = (io) => {
         const type=data.type||"text";
         if(!conversationId) return ack({success:false,message:"conversationId is required"});
         if(!["text","image","video","audio","file"].includes(type)) return ack({success:false,message:"Invalid message type"});
+        if(type!=="text"&&!data.media) return ack({success:false,message:"Media metadata is required"});
         if(type==="text"&&!String(data.content||"").trim()) return ack({success:false,message:"Message content is required"});
         const member=await Member.exists({conversationId,userId,leftAt:null});
         if(!member) return ack({success:false,message:"Not a conversation member"});
@@ -71,10 +73,12 @@ module.exports = (io) => {
     });
 
     socket.on("typing:start",async(data={})=>{
+      if(socket.data.deviceId && !await Device.exists({_id:socket.data.deviceId,userId,isActive:true,revokedAt:null})) return;
       if(await Member.exists({conversationId:data.conversationId,userId,leftAt:null}))
         socket.to(String(data.conversationId)).emit("typing:start",{conversationId:data.conversationId,userId});
     });
     socket.on("typing:stop",async(data={})=>{
+      if(socket.data.deviceId && !await Device.exists({_id:socket.data.deviceId,userId,isActive:true,revokedAt:null})) return;
       if(await Member.exists({conversationId:data.conversationId,userId,leftAt:null}))
         socket.to(String(data.conversationId)).emit("typing:stop",{conversationId:data.conversationId,userId});
     });
