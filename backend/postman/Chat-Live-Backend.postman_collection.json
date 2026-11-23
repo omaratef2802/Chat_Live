@@ -1,0 +1,2419 @@
+{
+  "info": {
+    "_postman_id": "chat-live-local-reference",
+    "name": "Chat Live - Backend Reference & API Tests",
+    "description": "Offline-importable Postman collection for Chat Live backend. Set environment variables first. Email OTP must be read from the configured inbox and entered as otpCode. QR pairing requests are manual two-client steps.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "deviceId",
+      "value": ""
+    },
+    {
+      "key": "pairToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"{{firstName}}\",\n  \"lastName\": \"{{lastName}}\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"{{phone}}\",\n  \"password\": \"{{password}}\",\n  \"username\": \"{{username}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify email OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-email"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"code\": \"{{otpCode}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resend verification OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/resend-verification",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "resend-verification"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"code\": \"{{otpCode}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh linked device token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceId\": \"{{deviceId}}\",\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Users",
+      "item": [
+        {
+          "name": "My profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/search?q=omar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "search?q=omar"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Chat Live reference profile\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update privacy",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me/privacy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "privacy"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showPhoneNumber\": false,\n  \"lastSeenVisibility\": \"contacts\",\n  \"profilePhotoVisibility\": \"everyone\",\n  \"storyVisibility\": \"contacts\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Contacts and Blocks",
+      "item": [
+        {
+          "name": "List contacts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contacts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contacts"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add contact",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contacts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contacts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{otherUserId}}\",\n  \"nickname\": \"Friend\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Edit contact",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contacts/{{contactId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contacts",
+                "{{contactId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"Updated name\",\n  \"isFavorite\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remove contact",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contacts/{{contactId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contacts",
+                "{{contactId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List blocked users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blocks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "blocks"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Block user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blocks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "blocks"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{otherUserId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unblock user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blocks/{{otherUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "blocks",
+                "{{otherUserId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Private conversations and messages",
+      "item": [
+        {
+          "name": "List conversations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create private conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/private",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "private"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{otherUserId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages?page=1&limit=30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages?page=1&limit=30"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Send text message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"text\",\n  \"content\": \"Hello from Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Edit message",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages",
+                "{{messageId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Edited message\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete message for me",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages",
+                "{{messageId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"forEveryone\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "React to message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages/{{messageId}}/reactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "messages",
+                "{{messageId}}",
+                "reactions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emoji\": \"👍\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mark conversation read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                "{{conversationId}}",
+                "read"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messageId\": \"{{messageId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Groups",
+      "item": [
+        {
+          "name": "Create group",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Group\",\n  \"description\": \"Test group\",\n  \"memberIds\": [\n    \"{{otherUserId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get group members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update group details",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated group\",\n  \"description\": \"Updated description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add group members",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberIds\": [\n    \"{{otherUserId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Promote or demote member",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members/{{otherUserId}}/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members",
+                "{{otherUserId}}",
+                "role"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remove group member",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members/{{otherUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members",
+                "{{otherUserId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Leave group",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/leave",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "leave"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete group (admin only)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Media",
+      "item": [
+        {
+          "name": "Upload media (select file manually)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/media",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "media"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 - Stories",
+      "item": [
+        {
+          "name": "List visible stories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create text story",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"text\",\n  \"content\": \"Testing a story\",\n  \"visibility\": \"contacts\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "View story",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stories/{{storyId}}/view",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stories",
+                "{{storyId}}",
+                "view"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List story viewers (owner only)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stories/{{storyId}}/views",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stories",
+                "{{storyId}}",
+                "views"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete story",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stories/{{storyId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stories",
+                "{{storyId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "08 - Notifications",
+      "item": [
+        {
+          "name": "List notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mark one notification read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notificationId}}",
+                "read"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mark all notifications read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/read-all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "read-all"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "09 - Linked devices",
+      "item": [
+        {
+          "name": "Start QR pairing (secondary device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices/pair/start",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "devices",
+                "pair",
+                "start"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceName\": \"Browser device\",\n  \"deviceType\": \"browser\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Confirm QR pairing (primary device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices/pair/confirm",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "devices",
+                "pair",
+                "confirm"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pairToken\": \"{{pairToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Poll QR pairing (secondary device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices/pair/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "devices",
+                "pair",
+                "status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pairToken\": \"{{pairToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List linked devices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "devices"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Revoke linked device",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices/{{deviceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "devices",
+                "{{deviceId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response is successful or expected validation response\", function () { pm.expect(pm.response.code).to.be.within(200, 499); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300) { try { const data = pm.response.json(); pm.test(\"Successful response has JSON body\", function(){ pm.expect(data).to.be.an(\"object\"); }); } catch(e) {} }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
