@@ -106,11 +106,11 @@ Existing models are retained in `src/modules`: users, OTPs, linked devices, cont
 - Passwords and OTPs are hashed; refresh tokens are hashed at rest.
 - Linked-device refresh tokens rotate; revoked linked-device access tokens are rejected.
 - Ownership and active membership are checked for protected resources.
-- CORS is configured from environment; security response headers are added.
+- CORS is configured from environment; security response headers are added.\n- In-memory rate limits protect authentication and QR-pair start endpoints. Use a shared/distributed limiter for multi-instance production.
 - Uploads use in-memory buffering with a 20 MB cap.
 - Configure HTTPS and an explicit CORS allowlist before deployment.
 
-Still required before production: run the complete Postman collection against a real MongoDB/SMTP/Cloudinary setup; test QR pairing with two real clients; review race conditions and authorization edge cases; add production rate limiting and automated CI; validate file content beyond MIME headers; test presence with multiple devices and disconnect/reconnect cases. Group read receipts and SMS OTP are intentionally out of scope.
+Still required before production: run the complete Postman collection against a real MongoDB/SMTP/Cloudinary setup; test QR pairing with two real clients; review race conditions and authorization edge cases; replace the in-memory rate limiter with a shared/distributed limiter for multi-instance production; validate file content beyond MIME headers; test presence with multiple devices and disconnect/reconnect cases. Group read receipts and SMS OTP are intentionally out of scope.
 
 ## 7. Offline preparation
 
